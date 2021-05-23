@@ -10,20 +10,20 @@ mixer.music.load('phonky.mp3' )
 mixer.music.play()
 
 class sprit(sprite.Sprite):
-    def __init__(self, imag, x, y):
+    def __init__(self, imag, x, y,speed):
         super().__init__()
         self.image = transform.scale(image.load(imag),(60,60))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.xvel = 0
+        self.speed = speed
     def self (self):
         okno.blit(self.image,(self.rect.x, self.rect.y))
 
 class wall(sprite.Sprite):
     def __init__(self,  x, y):
         super().__init__()
-        self.image = Surface((60,60))
+        self.image = Surface((70,30))
         self.image.fill((0,50,200))
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -47,7 +47,7 @@ health = 10
 font.init()
 font1 = font.Font(None, 80)
 font2 = font.Font(None, 80)
-h1 = sprit("ball.png",280,340)
+h1 = sprit("ball.png",280,340,4)
 #los = font.render('you lose', True, (200,200,0))
 
 level = [
@@ -71,6 +71,8 @@ level = [
 "-  ----                 -",
 "-                       -",
 "-------------------------"]
+
+grsten=sprite.Group()
 steni=[]
 x = 280
 y = 340
@@ -81,6 +83,7 @@ for y1 in range(len(level)):
         if level[y1][x1]=="-":
             w = wall(x2,y2)
             steni.append(w)
+            grsten.add(w)
 
 while gm:
     okno.blit(bkgd,(0,0))
@@ -95,6 +98,10 @@ while gm:
     for i in steni:
         i.selff()
         i.update()
+        i.rect.y-=3
+    if sprite.spritecollideany(h1,grsten):
+        for i in grsten:
+            i.rect.y+=3.5
     #text = font1.render(txt,1,(230,40,230))
     #text2 = font2.render(txt2,2,(40,115,235))
     #okno.blit(text,(5,200))
